@@ -1,0 +1,4 @@
+Place sqlite-jdbc.jar here.
+
+Download from: https://github.com/xerial/sqlite-jdbc/releases
+Rename the downloaded file to: sqlite-jdbc.jar

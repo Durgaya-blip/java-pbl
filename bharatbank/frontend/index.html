@@ -1,0 +1,1866 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>BharatBank — आपका बैंक</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Yatra+One&family=Noto+Serif+Devanagari:wght@400;600&family=DM+Sans:wght@300;400;500;600&family=Playfair+Display:wght@700&display=swap" rel="stylesheet">
+<style>
+:root {
+  --saffron: #FF6B00;
+  --deep-saffron: #E55B00;
+  --gold: #D4A017;
+  --gold-light: #F5C842;
+  --cream: #FFF8EE;
+  --dark-cream: #F5E6CC;
+  --green: #138808;
+  --dark-green: #0D6B06;
+  --navy: #1A1E3C;
+  --deep-navy: #0F1228;
+  --white: #FFFFFF;
+  --text-dark: #1A1E3C;
+  --text-muted: #6B6E85;
+  --border: rgba(212,160,23,0.25);
+  --card-bg: rgba(255,255,255,0.92);
+  --success: #138808;
+  --danger: #C62828;
+  --warning: #FF6B00;
+  --shadow: 0 8px 40px rgba(26,30,60,0.12);
+  --shadow-gold: 0 4px 20px rgba(212,160,23,0.3);
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+body {
+  font-family: 'DM Sans', sans-serif;
+  background: var(--deep-navy);
+  color: var(--text-dark);
+  min-height: 100vh;
+  overflow-x: hidden;
+}
+
+/* ========= BACKGROUND ========= */
+.bg-pattern {
+  position: fixed; inset: 0; z-index: 0;
+  background: linear-gradient(135deg, #0F1228 0%, #1A1E3C 40%, #0D1A10 100%);
+}
+.bg-pattern::before {
+  content: '';
+  position: absolute; inset: 0;
+  background-image: url("data:image/svg+xml,%3Csvg width='80' height='80' viewBox='0 0 80 80' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23D4A017' fill-opacity='0.04'%3E%3Cpath d='M40 0L50 10L40 20L30 10zM0 40L10 50L0 60L-10 50zM80 40L90 50L80 60L70 50zM40 80L50 70L40 60L30 70z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+  opacity: 0.6;
+}
+.bg-pattern::after {
+  content: '';
+  position: absolute;
+  width: 600px; height: 600px;
+  background: radial-gradient(circle, rgba(255,107,0,0.08) 0%, transparent 70%);
+  top: -100px; right: -100px;
+  border-radius: 50%;
+}
+
+/* ========= CONTENT WRAPPER ========= */
+#app { position: relative; z-index: 1; min-height: 100vh; }
+
+/* ========= AUTH SCREEN ========= */
+#auth-screen {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+}
+
+.auth-container {
+  width: 100%;
+  max-width: 440px;
+}
+
+.auth-logo {
+  text-align: center;
+  margin-bottom: 36px;
+  animation: fadeDown 0.8s ease;
+}
+
+.auth-logo .logo-mark {
+  width: 80px; height: 80px;
+  background: linear-gradient(135deg, var(--saffron), var(--gold));
+  border-radius: 24px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 36px;
+  margin-bottom: 16px;
+  box-shadow: 0 8px 32px rgba(255,107,0,0.4);
+  position: relative;
+}
+
+.auth-logo .logo-mark::after {
+  content: '';
+  position: absolute;
+  inset: -3px;
+  border-radius: 27px;
+  background: linear-gradient(135deg, var(--gold-light), var(--saffron));
+  z-index: -1;
+  opacity: 0.5;
+}
+
+.auth-logo h1 {
+  font-family: 'Yatra One', cursive;
+  font-size: 2.4rem;
+  color: var(--white);
+  letter-spacing: 1px;
+}
+
+.auth-logo h1 span { color: var(--gold-light); }
+
+.auth-logo p {
+  font-family: 'Noto Serif Devanagari', serif;
+  color: rgba(255,255,255,0.5);
+  font-size: 0.9rem;
+  margin-top: 4px;
+}
+
+.tricolor-bar {
+  height: 4px;
+  background: linear-gradient(90deg, var(--saffron) 33.3%, var(--white) 33.3%, var(--white) 66.6%, var(--green) 66.6%);
+  border-radius: 2px;
+  margin: 0 auto 32px;
+  width: 120px;
+}
+
+.auth-card {
+  background: rgba(255,255,255,0.06);
+  backdrop-filter: blur(20px);
+  border: 1px solid rgba(212,160,23,0.2);
+  border-radius: 24px;
+  padding: 36px;
+  animation: fadeUp 0.8s ease 0.1s both;
+  box-shadow: 0 32px 64px rgba(0,0,0,0.4);
+}
+
+.auth-tabs {
+  display: flex;
+  gap: 4px;
+  background: rgba(0,0,0,0.3);
+  border-radius: 12px;
+  padding: 4px;
+  margin-bottom: 28px;
+}
+
+.auth-tab {
+  flex: 1;
+  padding: 10px;
+  border: none;
+  border-radius: 10px;
+  background: transparent;
+  color: rgba(255,255,255,0.5);
+  font-family: 'DM Sans', sans-serif;
+  font-size: 0.9rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.3s;
+}
+
+.auth-tab.active {
+  background: linear-gradient(135deg, var(--saffron), var(--gold));
+  color: var(--white);
+  box-shadow: 0 4px 12px rgba(255,107,0,0.4);
+}
+
+.form-group { margin-bottom: 18px; }
+
+.form-label {
+  display: block;
+  color: rgba(255,255,255,0.65);
+  font-size: 0.8rem;
+  font-weight: 500;
+  margin-bottom: 8px;
+  letter-spacing: 0.5px;
+  text-transform: uppercase;
+}
+
+.form-input {
+  width: 100%;
+  padding: 14px 18px;
+  background: rgba(255,255,255,0.08);
+  border: 1px solid rgba(212,160,23,0.25);
+  border-radius: 12px;
+  color: var(--white);
+  font-family: 'DM Sans', sans-serif;
+  font-size: 1rem;
+  transition: all 0.3s;
+  outline: none;
+}
+
+.form-input:focus {
+  border-color: var(--gold);
+  background: rgba(255,255,255,0.12);
+  box-shadow: 0 0 0 3px rgba(212,160,23,0.15);
+}
+
+.form-input::placeholder { color: rgba(255,255,255,0.25); }
+.form-input option { background: var(--navy); color: var(--white); }
+
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 14px 24px;
+  border: none;
+  border-radius: 12px;
+  font-family: 'DM Sans', sans-serif;
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s;
+  text-decoration: none;
+}
+
+.btn-primary {
+  background: linear-gradient(135deg, var(--saffron), #FF8C00);
+  color: var(--white);
+  width: 100%;
+  box-shadow: 0 4px 20px rgba(255,107,0,0.4);
+}
+.btn-primary:hover { transform: translateY(-2px); box-shadow: 0 8px 28px rgba(255,107,0,0.5); }
+.btn-primary:active { transform: translateY(0); }
+
+.btn-secondary {
+  background: rgba(255,255,255,0.1);
+  color: var(--white);
+  border: 1px solid rgba(255,255,255,0.2);
+}
+.btn-secondary:hover { background: rgba(255,255,255,0.15); }
+
+.btn-success {
+  background: linear-gradient(135deg, var(--green), #1B9E09);
+  color: var(--white);
+  box-shadow: 0 4px 16px rgba(19,136,8,0.35);
+}
+.btn-danger {
+  background: linear-gradient(135deg, #C62828, #E53935);
+  color: var(--white);
+}
+.btn-gold {
+  background: linear-gradient(135deg, var(--gold), var(--gold-light));
+  color: var(--navy);
+  font-weight: 700;
+}
+.btn-sm { padding: 8px 16px; font-size: 0.85rem; border-radius: 8px; }
+.btn-xs { padding: 5px 10px; font-size: 0.78rem; border-radius: 6px; }
+
+/* ========= MAIN APP LAYOUT ========= */
+#main-app { display: none; }
+
+.app-header {
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  background: rgba(15,18,40,0.95);
+  backdrop-filter: blur(20px);
+  border-bottom: 1px solid rgba(212,160,23,0.15);
+  padding: 0 24px;
+  height: 64px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.header-logo {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.header-logo .logo-icon {
+  width: 38px; height: 38px;
+  background: linear-gradient(135deg, var(--saffron), var(--gold));
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 18px;
+}
+
+.header-logo h2 {
+  font-family: 'Yatra One', cursive;
+  color: var(--white);
+  font-size: 1.4rem;
+}
+
+.header-logo h2 span { color: var(--gold-light); }
+
+.header-right { display: flex; align-items: center; gap: 16px; }
+
+.notif-btn {
+  position: relative;
+  width: 40px; height: 40px;
+  background: rgba(255,255,255,0.07);
+  border: 1px solid rgba(212,160,23,0.2);
+  border-radius: 10px;
+  display: flex; align-items: center; justify-content: center;
+  cursor: pointer;
+  font-size: 18px;
+  color: var(--white);
+  transition: all 0.2s;
+}
+.notif-btn:hover { background: rgba(255,255,255,0.12); }
+
+.notif-badge {
+  position: absolute;
+  top: -4px; right: -4px;
+  width: 18px; height: 18px;
+  background: var(--saffron);
+  border-radius: 50%;
+  font-size: 10px;
+  color: var(--white);
+  display: flex; align-items: center; justify-content: center;
+  font-weight: 700;
+}
+
+.user-chip {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  background: rgba(255,255,255,0.07);
+  border: 1px solid rgba(212,160,23,0.2);
+  border-radius: 12px;
+  padding: 6px 14px 6px 6px;
+  cursor: pointer;
+}
+
+.user-avatar {
+  width: 30px; height: 30px;
+  background: linear-gradient(135deg, var(--green), #1B9E09);
+  border-radius: 8px;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 14px; color: var(--white); font-weight: 700;
+}
+
+.user-chip span { color: rgba(255,255,255,0.85); font-size: 0.9rem; font-weight: 500; }
+
+/* ========= LAYOUT ========= */
+.app-body {
+  display: flex;
+  min-height: calc(100vh - 64px);
+}
+
+/* ========= SIDEBAR ========= */
+.sidebar {
+  width: 240px;
+  flex-shrink: 0;
+  background: rgba(15,18,40,0.8);
+  border-right: 1px solid rgba(212,160,23,0.1);
+  padding: 20px 12px;
+  overflow-y: auto;
+}
+
+.nav-section-title {
+  font-size: 0.68rem;
+  font-weight: 600;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  color: rgba(212,160,23,0.5);
+  padding: 6px 12px;
+  margin-bottom: 4px;
+  margin-top: 16px;
+}
+
+.nav-item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 11px 14px;
+  border-radius: 10px;
+  cursor: pointer;
+  color: rgba(255,255,255,0.55);
+  font-size: 0.9rem;
+  font-weight: 500;
+  transition: all 0.2s;
+  margin-bottom: 2px;
+  border: none;
+  background: transparent;
+  width: 100%;
+  text-align: left;
+}
+
+.nav-item:hover {
+  background: rgba(255,255,255,0.06);
+  color: rgba(255,255,255,0.85);
+}
+
+.nav-item.active {
+  background: linear-gradient(135deg, rgba(255,107,0,0.2), rgba(212,160,23,0.15));
+  color: var(--gold-light);
+  border: 1px solid rgba(212,160,23,0.25);
+}
+
+.nav-icon { font-size: 18px; width: 22px; text-align: center; }
+
+/* ========= MAIN CONTENT ========= */
+.main-content {
+  flex: 1;
+  padding: 28px;
+  overflow-y: auto;
+}
+
+/* ========= PAGE HEADER ========= */
+.page-header {
+  margin-bottom: 28px;
+}
+
+.page-header h2 {
+  font-family: 'Playfair Display', serif;
+  font-size: 1.75rem;
+  color: var(--white);
+  margin-bottom: 4px;
+}
+
+.page-header p { color: rgba(255,255,255,0.45); font-size: 0.9rem; }
+
+.chakra-divider {
+  height: 3px;
+  background: linear-gradient(90deg, var(--saffron), var(--gold), var(--green));
+  border-radius: 2px;
+  width: 60px;
+  margin: 10px 0 0;
+}
+
+/* ========= CARDS ========= */
+.card {
+  background: rgba(255,255,255,0.05);
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(212,160,23,0.15);
+  border-radius: 20px;
+  padding: 24px;
+  transition: all 0.3s;
+}
+
+.card:hover { border-color: rgba(212,160,23,0.3); }
+
+.card-gold {
+  background: linear-gradient(135deg, rgba(212,160,23,0.15), rgba(255,107,0,0.1));
+  border-color: rgba(212,160,23,0.3);
+}
+
+/* ========= STATS GRID ========= */
+.stats-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 16px;
+  margin-bottom: 28px;
+}
+
+.stat-card {
+  background: rgba(255,255,255,0.05);
+  border: 1px solid rgba(212,160,23,0.15);
+  border-radius: 18px;
+  padding: 20px;
+  position: relative;
+  overflow: hidden;
+  transition: all 0.3s;
+}
+
+.stat-card::before {
+  content: attr(data-icon);
+  position: absolute;
+  right: 16px; top: 50%;
+  transform: translateY(-50%);
+  font-size: 40px;
+  opacity: 0.08;
+}
+
+.stat-card:hover { transform: translateY(-3px); border-color: rgba(212,160,23,0.35); }
+
+.stat-label { font-size: 0.78rem; color: rgba(255,255,255,0.45); text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 8px; }
+.stat-value { font-size: 1.6rem; font-weight: 700; color: var(--white); font-family: 'Playfair Display', serif; }
+.stat-value.saffron { color: var(--gold-light); }
+.stat-value.green { color: #4CAF50; }
+.stat-sub { font-size: 0.78rem; color: rgba(255,255,255,0.35); margin-top: 4px; }
+
+/* ========= ACCOUNT CARDS ========= */
+.account-cards { display: flex; flex-wrap: wrap; gap: 16px; margin-bottom: 28px; }
+
+.account-card {
+  flex: 1 1 280px;
+  background: linear-gradient(135deg, #1A1E3C, #252A50);
+  border: 1px solid rgba(212,160,23,0.25);
+  border-radius: 20px;
+  padding: 24px;
+  position: relative;
+  overflow: hidden;
+  transition: all 0.3s;
+}
+
+.account-card.savings { background: linear-gradient(135deg, #0D2B1A, #1A4A2E); }
+.account-card.current { background: linear-gradient(135deg, #1A1535, #2E1A50); }
+
+.account-card::after {
+  content: '';
+  position: absolute;
+  width: 150px; height: 150px;
+  background: radial-gradient(circle, rgba(212,160,23,0.15) 0%, transparent 70%);
+  bottom: -40px; right: -40px;
+  border-radius: 50%;
+}
+
+.acc-type { font-size: 0.75rem; text-transform: uppercase; letter-spacing: 1.5px; color: var(--gold); margin-bottom: 16px; font-weight: 600; }
+.acc-id { font-size: 0.8rem; color: rgba(255,255,255,0.4); margin-bottom: 8px; }
+.acc-balance { font-family: 'Playfair Display', serif; font-size: 2rem; font-weight: 700; color: var(--white); }
+.acc-rupee { font-size: 1.2rem; color: var(--gold); margin-right: 4px; }
+.acc-date { font-size: 0.75rem; color: rgba(255,255,255,0.3); margin-top: 10px; }
+
+.account-card:hover { transform: translateY(-4px); box-shadow: 0 16px 48px rgba(0,0,0,0.4), var(--shadow-gold); }
+
+/* ========= FORMS ========= */
+.form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+.form-group-dark { margin-bottom: 18px; }
+.form-label-dark { display: block; color: rgba(255,255,255,0.55); font-size: 0.8rem; margin-bottom: 8px; text-transform: uppercase; letter-spacing: 0.5px; }
+.form-input-dark {
+  width: 100%;
+  padding: 13px 16px;
+  background: rgba(0,0,0,0.3);
+  border: 1px solid rgba(212,160,23,0.2);
+  border-radius: 10px;
+  color: var(--white);
+  font-family: 'DM Sans', sans-serif;
+  font-size: 0.95rem;
+  outline: none;
+  transition: all 0.2s;
+}
+.form-input-dark:focus { border-color: var(--gold); box-shadow: 0 0 0 3px rgba(212,160,23,0.12); }
+.form-input-dark option { background: #1A1E3C; }
+
+/* ========= TABLES ========= */
+.table-container {
+  overflow-x: auto;
+  border-radius: 14px;
+  border: 1px solid rgba(212,160,23,0.15);
+}
+
+table { width: 100%; border-collapse: collapse; }
+
+th {
+  background: rgba(0,0,0,0.4);
+  color: rgba(212,160,23,0.8);
+  font-size: 0.75rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.8px;
+  padding: 14px 16px;
+  text-align: left;
+  border-bottom: 1px solid rgba(212,160,23,0.15);
+}
+
+td {
+  padding: 13px 16px;
+  border-bottom: 1px solid rgba(255,255,255,0.05);
+  color: rgba(255,255,255,0.8);
+  font-size: 0.88rem;
+}
+
+tr:last-child td { border-bottom: none; }
+tr:hover td { background: rgba(255,255,255,0.03); }
+
+.badge {
+  display: inline-flex;
+  align-items: center;
+  padding: 3px 10px;
+  border-radius: 20px;
+  font-size: 0.72rem;
+  font-weight: 600;
+  text-transform: uppercase;
+}
+
+.badge-active { background: rgba(19,136,8,0.2); color: #4CAF50; border: 1px solid rgba(19,136,8,0.3); }
+.badge-closed { background: rgba(198,40,40,0.2); color: #EF5350; border: 1px solid rgba(198,40,40,0.3); }
+.badge-savings { background: rgba(19,136,8,0.15); color: #66BB6A; }
+.badge-current { background: rgba(103,58,183,0.2); color: #CE93D8; }
+
+/* ========= TRANSACTION TYPES ========= */
+.tx-deposit { color: #66BB6A; }
+.tx-withdraw { color: #EF5350; }
+.tx-transfer { color: #42A5F5; }
+.tx-loan { color: #AB47BC; }
+.tx-fd { color: #FFA726; }
+
+/* ========= TOAST ========= */
+#toast-container {
+  position: fixed;
+  top: 80px; right: 24px;
+  z-index: 1000;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  pointer-events: none;
+}
+
+.toast {
+  background: rgba(26,30,60,0.95);
+  backdrop-filter: blur(20px);
+  border-radius: 14px;
+  padding: 14px 20px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  border-left: 4px solid var(--saffron);
+  max-width: 340px;
+  box-shadow: 0 8px 32px rgba(0,0,0,0.5);
+  animation: slideIn 0.4s ease;
+  pointer-events: all;
+  min-width: 280px;
+}
+
+.toast.success { border-left-color: var(--green); }
+.toast.error { border-left-color: var(--danger); }
+.toast-icon { font-size: 22px; }
+.toast-msg { color: var(--white); font-size: 0.9rem; font-weight: 500; flex: 1; }
+
+/* ========= MODAL ========= */
+.modal-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.7);
+  backdrop-filter: blur(8px);
+  z-index: 500;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+}
+
+.modal {
+  background: #1A1E3C;
+  border: 1px solid rgba(212,160,23,0.25);
+  border-radius: 24px;
+  padding: 32px;
+  width: 100%;
+  max-width: 480px;
+  box-shadow: 0 40px 80px rgba(0,0,0,0.6);
+  animation: fadeUp 0.3s ease;
+}
+
+.modal-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 24px;
+}
+
+.modal-title { color: var(--white); font-size: 1.2rem; font-weight: 600; font-family: 'Playfair Display', serif; }
+.modal-close { background: none; border: none; color: rgba(255,255,255,0.4); font-size: 22px; cursor: pointer; transition: color 0.2s; }
+.modal-close:hover { color: var(--white); }
+
+/* ========= CALCULATOR RESULT ========= */
+.calc-result {
+  background: linear-gradient(135deg, rgba(19,136,8,0.15), rgba(19,136,8,0.05));
+  border: 1px solid rgba(19,136,8,0.3);
+  border-radius: 14px;
+  padding: 20px;
+  margin-top: 16px;
+}
+
+.calc-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 8px 0;
+  border-bottom: 1px solid rgba(255,255,255,0.06);
+}
+.calc-row:last-child { border-bottom: none; }
+.calc-key { color: rgba(255,255,255,0.55); font-size: 0.85rem; }
+.calc-val { color: var(--white); font-weight: 600; }
+.calc-val.big { font-size: 1.2rem; color: var(--gold-light); font-family: 'Playfair Display', serif; }
+
+/* ========= EMPTY STATE ========= */
+.empty-state {
+  text-align: center;
+  padding: 60px 20px;
+  color: rgba(255,255,255,0.3);
+}
+.empty-state .empty-icon { font-size: 48px; margin-bottom: 12px; opacity: 0.5; }
+.empty-state h3 { color: rgba(255,255,255,0.5); font-size: 1rem; margin-bottom: 8px; }
+.empty-state p { font-size: 0.85rem; }
+
+/* ========= ASHOKA CHAKRA LOADER ========= */
+.chakra-loader {
+  display: inline-block;
+  width: 40px; height: 40px;
+  border: 3px solid rgba(212,160,23,0.2);
+  border-top-color: var(--gold);
+  border-radius: 50%;
+  animation: spin 0.8s linear infinite;
+}
+
+/* ========= NOTIF PANEL ========= */
+.notif-panel {
+  position: fixed;
+  top: 64px; right: 0;
+  width: 360px;
+  height: calc(100vh - 64px);
+  background: rgba(15,18,40,0.98);
+  backdrop-filter: blur(20px);
+  border-left: 1px solid rgba(212,160,23,0.15);
+  z-index: 200;
+  overflow-y: auto;
+  transform: translateX(100%);
+  transition: transform 0.3s ease;
+}
+.notif-panel.open { transform: translateX(0); }
+
+.notif-header {
+  padding: 20px;
+  border-bottom: 1px solid rgba(212,160,23,0.12);
+  display: flex; align-items: center; justify-content: space-between;
+}
+.notif-header h3 { color: var(--white); font-size: 1rem; }
+
+.notif-item {
+  padding: 14px 20px;
+  border-bottom: 1px solid rgba(255,255,255,0.05);
+  transition: background 0.2s;
+}
+.notif-item:hover { background: rgba(255,255,255,0.04); }
+.notif-item.unread { border-left: 3px solid var(--saffron); }
+.notif-msg { color: rgba(255,255,255,0.8); font-size: 0.88rem; margin-bottom: 4px; }
+.notif-time { color: rgba(255,255,255,0.3); font-size: 0.76rem; }
+
+/* ========= ADMIN ========= */
+.admin-stat-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 16px;
+  margin-bottom: 28px;
+}
+
+.admin-stat-card {
+  background: linear-gradient(135deg, rgba(255,107,0,0.1), rgba(212,160,23,0.08));
+  border: 1px solid rgba(212,160,23,0.2);
+  border-radius: 16px;
+  padding: 20px;
+}
+
+.admin-stat-label { font-size: 0.75rem; color: rgba(255,255,255,0.4); text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 10px; }
+.admin-stat-value { font-size: 1.8rem; font-weight: 700; color: var(--gold-light); font-family: 'Playfair Display', serif; }
+
+/* ========= ANIMATIONS ========= */
+@keyframes fadeDown { from { opacity: 0; transform: translateY(-20px); } to { opacity: 1; transform: translateY(0); } }
+@keyframes fadeUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+@keyframes slideIn { from { opacity: 0; transform: translateX(40px); } to { opacity: 1; transform: translateX(0); } }
+@keyframes spin { to { transform: rotate(360deg); } }
+@keyframes pulse { 0%,100% { opacity: 1; } 50% { opacity: 0.5; } }
+
+/* ========= GRID UTILS ========= */
+.grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+.grid-3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 16px; }
+.gap-4 { gap: 16px; }
+.mt-4 { margin-top: 16px; }
+.mt-6 { margin-top: 24px; }
+.mb-4 { margin-bottom: 16px; }
+.flex { display: flex; }
+.items-center { align-items: center; }
+.justify-between { justify-content: space-between; }
+.flex-wrap { flex-wrap: wrap; }
+.gap-3 { gap: 12px; }
+.w-full { width: 100%; }
+.text-center { text-align: center; }
+.text-gold { color: var(--gold-light); }
+.text-muted { color: rgba(255,255,255,0.4); }
+.text-white { color: var(--white); }
+.text-green { color: #66BB6A; }
+.text-red { color: #EF5350; }
+.font-bold { font-weight: 700; }
+.text-sm { font-size: 0.85rem; }
+.text-xs { font-size: 0.78rem; }
+
+/* ========= SCROLLBAR ========= */
+::-webkit-scrollbar { width: 6px; height: 6px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb { background: rgba(212,160,23,0.25); border-radius: 3px; }
+::-webkit-scrollbar-thumb:hover { background: rgba(212,160,23,0.4); }
+
+/* ========= RESPONSIVE ========= */
+@media (max-width: 768px) {
+  .sidebar { display: none; }
+  .form-row { grid-template-columns: 1fr; }
+  .grid-2 { grid-template-columns: 1fr; }
+  .grid-3 { grid-template-columns: 1fr; }
+  .main-content { padding: 16px; }
+}
+
+.page-section { display: none; }
+.page-section.active { display: block; animation: fadeUp 0.3s ease; }
+
+/* Color fix for select inputs */
+select.form-input-dark option { background-color: #1A1E3C; color: white; }
+</style>
+</head>
+<body>
+
+<div class="bg-pattern"></div>
+<div id="app">
+
+<!-- AUTH SCREEN -->
+<div id="auth-screen">
+  <div class="auth-container">
+    <div class="auth-logo">
+      <div class="logo-mark">🏛️</div>
+      <h1>Bharat<span>Bank</span></h1>
+      <p>आपका विश्वसनीय बैंक — Your Trusted Bank</p>
+      <div class="tricolor-bar"></div>
+    </div>
+    <div class="auth-card">
+      <div class="auth-tabs">
+        <button class="auth-tab active" onclick="switchAuthTab('login')">Login</button>
+        <button class="auth-tab" onclick="switchAuthTab('register')">Register</button>
+      </div>
+      <div id="login-form">
+        <div class="form-group">
+          <label class="form-label">Username</label>
+          <input type="text" class="form-input" id="login-user" placeholder="Enter your username" autocomplete="off">
+        </div>
+        <div class="form-group">
+          <label class="form-label">Password</label>
+          <input type="password" class="form-input" id="login-pass" placeholder="Enter your password">
+        </div>
+        <button class="btn btn-primary" onclick="doLogin()">🔑 Login to BharatBank</button>
+      </div>
+      <div id="register-form" style="display:none">
+        <div class="form-group">
+          <label class="form-label">Choose Username</label>
+          <input type="text" class="form-input" id="reg-user" placeholder="Enter desired username" autocomplete="off">
+        </div>
+        <div class="form-group">
+          <label class="form-label">Password (min 6 chars)</label>
+          <input type="password" class="form-input" id="reg-pass" placeholder="Create a strong password">
+        </div>
+        <button class="btn btn-primary" onclick="doRegister()">🌟 Create Account</button>
+      </div>
+      <p class="text-center text-muted text-sm mt-4">Default admin: <span class="text-gold">admin / admin123</span></p>
+    </div>
+  </div>
+</div>
+
+<!-- MAIN APP -->
+<div id="main-app">
+  <!-- Header -->
+  <header class="app-header">
+    <div class="header-logo">
+      <div class="logo-icon">🏛️</div>
+      <h2>Bharat<span>Bank</span></h2>
+    </div>
+    <div class="header-right">
+      <button class="notif-btn" onclick="toggleNotifPanel()" title="Notifications">
+        🔔<span class="notif-badge" id="notif-count" style="display:none">0</span>
+      </button>
+      <div class="user-chip" onclick="navigateTo('settings')">
+        <div class="user-avatar" id="user-avatar">U</div>
+        <span id="header-username">User</span>
+      </div>
+      <button class="btn btn-secondary btn-sm" onclick="doLogout()">Logout</button>
+    </div>
+  </header>
+
+  <!-- Body -->
+  <div class="app-body">
+    <!-- Sidebar -->
+    <nav class="sidebar" id="sidebar">
+      <p class="nav-section-title">Main</p>
+      <button class="nav-item active" onclick="navigateTo('dashboard')" id="nav-dashboard">
+        <span class="nav-icon">🏠</span> Dashboard
+      </button>
+      <button class="nav-item" onclick="navigateTo('accounts')" id="nav-accounts">
+        <span class="nav-icon">🪙</span> My Accounts
+      </button>
+      <button class="nav-item" onclick="navigateTo('transactions')" id="nav-transactions">
+        <span class="nav-icon">📋</span> Transactions
+      </button>
+      <p class="nav-section-title">Banking</p>
+      <button class="nav-item" onclick="navigateTo('deposit')" id="nav-deposit">
+        <span class="nav-icon">⬆️</span> Deposit
+      </button>
+      <button class="nav-item" onclick="navigateTo('withdraw')" id="nav-withdraw">
+        <span class="nav-icon">⬇️</span> Withdraw
+      </button>
+      <button class="nav-item" onclick="navigateTo('transfer')" id="nav-transfer">
+        <span class="nav-icon">↔️</span> Transfer
+      </button>
+      <button class="nav-item" onclick="navigateTo('beneficiaries')" id="nav-beneficiaries">
+        <span class="nav-icon">👥</span> Beneficiaries
+      </button>
+      <p class="nav-section-title">Investments</p>
+      <button class="nav-item" onclick="navigateTo('fd')" id="nav-fd">
+        <span class="nav-icon">📈</span> Fixed Deposits
+      </button>
+      <button class="nav-item" onclick="navigateTo('loans')" id="nav-loans">
+        <span class="nav-icon">🏦</span> Loans
+      </button>
+      <button class="nav-item" onclick="navigateTo('calculator')" id="nav-calculator">
+        <span class="nav-icon">🧮</span> Calculator
+      </button>
+      <p class="nav-section-title">Account</p>
+      <button class="nav-item" onclick="navigateTo('settings')" id="nav-settings">
+        <span class="nav-icon">⚙️</span> Settings
+      </button>
+      <!-- Admin only -->
+      <div id="admin-nav" style="display:none">
+        <p class="nav-section-title">Admin Panel</p>
+        <button class="nav-item" onclick="navigateTo('admin-stats')" id="nav-admin-stats">
+          <span class="nav-icon">📊</span> Bank Stats
+        </button>
+        <button class="nav-item" onclick="navigateTo('admin-users')" id="nav-admin-users">
+          <span class="nav-icon">👤</span> Manage Users
+        </button>
+        <button class="nav-item" onclick="navigateTo('admin-accounts')" id="nav-admin-accounts">
+          <span class="nav-icon">🗃️</span> All Accounts
+        </button>
+      </div>
+    </nav>
+
+    <!-- Main Content -->
+    <main class="main-content">
+
+      <!-- DASHBOARD -->
+      <div class="page-section active" id="page-dashboard">
+        <div class="page-header">
+          <h2 id="dash-greeting">Welcome back!</h2>
+          <p>Here's your financial snapshot</p>
+          <div class="chakra-divider"></div>
+        </div>
+        <div class="stats-grid" id="dash-stats">
+          <div class="stat-card" data-icon="🪙">
+            <div class="stat-label">Total Balance</div>
+            <div class="stat-value saffron" id="dash-total-balance">₹0</div>
+          </div>
+          <div class="stat-card" data-icon="📋">
+            <div class="stat-label">Accounts</div>
+            <div class="stat-value" id="dash-acc-count">0</div>
+          </div>
+          <div class="stat-card" data-icon="📈">
+            <div class="stat-label">Active FDs</div>
+            <div class="stat-value green" id="dash-fd-count">0</div>
+          </div>
+          <div class="stat-card" data-icon="🏦">
+            <div class="stat-label">Active Loans</div>
+            <div class="stat-value" id="dash-loan-count">0</div>
+          </div>
+        </div>
+        <div class="mb-4">
+          <h3 class="text-white font-bold mb-4">Your Accounts</h3>
+          <div class="account-cards" id="dash-accounts"></div>
+        </div>
+        <div class="card">
+          <div class="flex justify-between items-center mb-4">
+            <h3 class="text-white font-bold">Quick Actions</h3>
+          </div>
+          <div class="flex flex-wrap gap-3">
+            <button class="btn btn-primary btn-sm" onclick="navigateTo('deposit')">⬆️ Deposit</button>
+            <button class="btn btn-success btn-sm" onclick="navigateTo('transfer')">↔️ Transfer</button>
+            <button class="btn btn-gold btn-sm" onclick="navigateTo('fd')">📈 Open FD</button>
+            <button class="btn btn-secondary btn-sm" onclick="navigateTo('calculator')">🧮 Calculator</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- ACCOUNTS -->
+      <div class="page-section" id="page-accounts">
+        <div class="page-header">
+          <h2>My Accounts</h2>
+          <p>Manage your bank accounts</p>
+          <div class="chakra-divider"></div>
+        </div>
+        <div class="card mb-4">
+          <h3 class="text-white font-bold mb-4">Open New Account</h3>
+          <div class="flex gap-3 flex-wrap">
+            <button class="btn btn-success" onclick="createAccount('Savings')">🟢 Open Savings Account</button>
+            <button class="btn btn-secondary" onclick="createAccount('Current')">🔵 Open Current Account</button>
+          </div>
+        </div>
+        <div class="account-cards" id="acc-list"></div>
+      </div>
+
+      <!-- TRANSACTIONS -->
+      <div class="page-section" id="page-transactions">
+        <div class="page-header">
+          <h2>Transaction History</h2>
+          <p>Last 50 transactions for selected account</p>
+          <div class="chakra-divider"></div>
+        </div>
+        <div class="card mb-4">
+          <div class="flex gap-3 items-center flex-wrap">
+            <div style="flex:1; min-width:200px;">
+              <label class="form-label-dark">Select Account</label>
+              <select class="form-input-dark" id="tx-account-select"></select>
+            </div>
+            <div style="padding-top: 20px;">
+              <button class="btn btn-primary" onclick="loadTransactions()">🔍 Load Transactions</button>
+            </div>
+          </div>
+        </div>
+        <div class="table-container">
+          <table>
+            <thead>
+              <tr><th>Date</th><th>Type</th><th>Amount</th><th>Charges</th><th>From → To</th><th>Note</th></tr>
+            </thead>
+            <tbody id="tx-table-body">
+              <tr><td colspan="6"><div class="empty-state"><div class="empty-icon">📋</div><p>Select an account to view transactions</p></div></td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- DEPOSIT -->
+      <div class="page-section" id="page-deposit">
+        <div class="page-header">
+          <h2>Deposit Money</h2>
+          <p>Add funds to your account</p>
+          <div class="chakra-divider"></div>
+        </div>
+        <div class="card" style="max-width: 500px;">
+          <div class="form-group-dark">
+            <label class="form-label-dark">Select Account</label>
+            <select class="form-input-dark" id="dep-account"></select>
+          </div>
+          <div class="form-group-dark">
+            <label class="form-label-dark">Amount (₹)</label>
+            <input type="number" class="form-input-dark" id="dep-amount" placeholder="Enter amount" min="1">
+          </div>
+          <button class="btn btn-primary w-full" onclick="doDeposit()">⬆️ Deposit Money</button>
+        </div>
+      </div>
+
+      <!-- WITHDRAW -->
+      <div class="page-section" id="page-withdraw">
+        <div class="page-header">
+          <h2>Withdraw Money</h2>
+          <p>Withdraw funds from your account</p>
+          <div class="chakra-divider"></div>
+        </div>
+        <div class="card" style="max-width: 500px;">
+          <div class="form-group-dark">
+            <label class="form-label-dark">Select Account</label>
+            <select class="form-input-dark" id="wd-account"></select>
+          </div>
+          <div class="form-group-dark">
+            <label class="form-label-dark">Amount (₹)</label>
+            <input type="number" class="form-input-dark" id="wd-amount" placeholder="Enter amount" min="1">
+          </div>
+          <div class="calc-result" style="margin-bottom:16px; background: rgba(255,107,0,0.08); border-color: rgba(255,107,0,0.2);">
+            <p class="text-sm text-muted">⚠️ Large withdrawals (≥₹10,000) attract 1% service charge. Savings accounts must maintain ₹500 minimum balance.</p>
+          </div>
+          <button class="btn btn-danger w-full" onclick="doWithdraw()">⬇️ Withdraw Money</button>
+        </div>
+      </div>
+
+      <!-- TRANSFER -->
+      <div class="page-section" id="page-transfer">
+        <div class="page-header">
+          <h2>Fund Transfer</h2>
+          <p>Send money to any account</p>
+          <div class="chakra-divider"></div>
+        </div>
+        <div class="card" style="max-width: 560px;">
+          <div class="form-group-dark">
+            <label class="form-label-dark">From Account</label>
+            <select class="form-input-dark" id="tr-from"></select>
+          </div>
+          <div class="form-group-dark">
+            <label class="form-label-dark">To Account ID</label>
+            <input type="number" class="form-input-dark" id="tr-to" placeholder="Enter destination account ID">
+          </div>
+          <div class="form-group-dark">
+            <label class="form-label-dark">Amount (₹)</label>
+            <input type="number" class="form-input-dark" id="tr-amount" placeholder="Enter amount" min="1">
+          </div>
+          <button class="btn btn-primary w-full" onclick="doTransfer()">↔️ Transfer Money</button>
+          <div class="mt-4">
+            <h4 class="text-gold text-sm mb-4">Quick Transfer from Beneficiaries</h4>
+            <div id="ben-quick-list" class="flex flex-wrap gap-3"></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- BENEFICIARIES -->
+      <div class="page-section" id="page-beneficiaries">
+        <div class="page-header">
+          <h2>Saved Beneficiaries</h2>
+          <p>Manage saved payees for quick transfers</p>
+          <div class="chakra-divider"></div>
+        </div>
+        <div class="card mb-4" style="max-width: 480px;">
+          <h3 class="text-white font-bold mb-4">Add New Beneficiary</h3>
+          <div class="form-group-dark">
+            <label class="form-label-dark">Account ID</label>
+            <input type="number" class="form-input-dark" id="ben-acc-id" placeholder="Enter account ID">
+          </div>
+          <div class="form-group-dark">
+            <label class="form-label-dark">Nickname (optional)</label>
+            <input type="text" class="form-input-dark" id="ben-nickname" placeholder="e.g., Mom's Account">
+          </div>
+          <button class="btn btn-primary" onclick="addBeneficiary()">➕ Add Beneficiary</button>
+        </div>
+        <div class="table-container">
+          <table>
+            <thead><tr><th>#</th><th>Nickname</th><th>Account</th><th>Holder</th><th>Type</th><th>Action</th></tr></thead>
+            <tbody id="ben-table"></tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- FIXED DEPOSITS -->
+      <div class="page-section" id="page-fd">
+        <div class="page-header">
+          <h2>Fixed Deposits</h2>
+          <p>Grow your money with guaranteed returns</p>
+          <div class="chakra-divider"></div>
+        </div>
+        <div class="grid-2 mb-4">
+          <div class="card">
+            <h3 class="text-white font-bold mb-4">Create New FD</h3>
+            <div class="form-group-dark">
+              <label class="form-label-dark">Source Account</label>
+              <select class="form-input-dark" id="fd-account"></select>
+            </div>
+            <div class="form-group-dark">
+              <label class="form-label-dark">Principal Amount (₹) — Min ₹1,000</label>
+              <input type="number" class="form-input-dark" id="fd-principal" placeholder="e.g., 50000" oninput="previewFD()">
+            </div>
+            <div class="form-group-dark">
+              <label class="form-label-dark">Annual Interest Rate (%)</label>
+              <input type="number" class="form-input-dark" id="fd-rate" placeholder="e.g., 7.5" step="0.1" oninput="previewFD()">
+            </div>
+            <div class="form-group-dark">
+              <label class="form-label-dark">Duration (years)</label>
+              <input type="number" class="form-input-dark" id="fd-years" placeholder="e.g., 2" min="1" oninput="previewFD()">
+            </div>
+            <div id="fd-preview" style="display:none" class="calc-result mb-4">
+              <div class="calc-row"><span class="calc-key">Maturity Amount</span><span class="calc-val big" id="fd-maturity-preview">₹0</span></div>
+              <div class="calc-row"><span class="calc-key">Interest Earned</span><span class="calc-val text-green" id="fd-interest-preview">₹0</span></div>
+            </div>
+            <button class="btn btn-gold w-full" onclick="createFD()">📈 Create Fixed Deposit</button>
+          </div>
+          <div class="card">
+            <h3 class="text-white font-bold mb-4">Your FDs</h3>
+            <div id="fd-list"></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- LOANS -->
+      <div class="page-section" id="page-loans">
+        <div class="page-header">
+          <h2>Loans</h2>
+          <p>Apply for loans and manage repayments</p>
+          <div class="chakra-divider"></div>
+        </div>
+        <div class="grid-2 mb-4">
+          <div class="card">
+            <h3 class="text-white font-bold mb-4">Apply for Loan</h3>
+            <div class="form-group-dark">
+              <label class="form-label-dark">Credit to Account</label>
+              <select class="form-input-dark" id="loan-account"></select>
+            </div>
+            <div class="form-group-dark">
+              <label class="form-label-dark">Loan Amount (₹)</label>
+              <input type="number" class="form-input-dark" id="loan-principal" placeholder="Min ₹5,000 — Max ₹50,00,000" oninput="previewLoan()">
+            </div>
+            <div class="form-group-dark">
+              <label class="form-label-dark">Annual Rate (%)</label>
+              <input type="number" class="form-input-dark" id="loan-rate" placeholder="e.g., 10.5" step="0.1" oninput="previewLoan()">
+            </div>
+            <div class="form-group-dark">
+              <label class="form-label-dark">Duration (years)</label>
+              <input type="number" class="form-input-dark" id="loan-years" placeholder="e.g., 5" min="1" oninput="previewLoan()">
+            </div>
+            <div id="loan-preview" style="display:none" class="calc-result mb-4">
+              <div class="calc-row"><span class="calc-key">Monthly EMI</span><span class="calc-val big" id="loan-emi-preview">₹0</span></div>
+              <div class="calc-row"><span class="calc-key">Total Payable</span><span class="calc-val" id="loan-total-preview">₹0</span></div>
+              <div class="calc-row"><span class="calc-key">Total Interest</span><span class="calc-val text-red" id="loan-interest-preview">₹0</span></div>
+            </div>
+            <button class="btn btn-primary w-full" onclick="applyLoan()">🏦 Apply for Loan</button>
+          </div>
+          <div class="card">
+            <h3 class="text-white font-bold mb-4">My Loans</h3>
+            <div id="loan-list"></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- CALCULATOR -->
+      <div class="page-section" id="page-calculator">
+        <div class="page-header">
+          <h2>Financial Calculator</h2>
+          <p>Plan your investments and loans</p>
+          <div class="chakra-divider"></div>
+        </div>
+        <div class="grid-2">
+          <div class="card">
+            <h3 class="text-white font-bold mb-4">💰 Savings Interest Calculator</h3>
+            <div class="form-group-dark">
+              <label class="form-label-dark">Principal (₹)</label>
+              <input type="number" class="form-input-dark" id="si-principal" placeholder="e.g., 100000">
+            </div>
+            <div class="form-group-dark">
+              <label class="form-label-dark">Annual Rate (%)</label>
+              <input type="number" class="form-input-dark" id="si-rate" placeholder="e.g., 6.5" step="0.1">
+            </div>
+            <div class="form-group-dark">
+              <label class="form-label-dark">Years</label>
+              <input type="number" class="form-input-dark" id="si-years" placeholder="e.g., 5">
+            </div>
+            <button class="btn btn-gold w-full mb-4" onclick="calcSavings()">Calculate</button>
+            <div id="si-result" style="display:none" class="calc-result">
+              <div class="calc-row"><span class="calc-key">Simple Interest</span><span class="calc-val" id="si-si">₹0</span></div>
+              <div class="calc-row"><span class="calc-key">SI Maturity</span><span class="calc-val" id="si-si-mat">₹0</span></div>
+              <div class="calc-row"><span class="calc-key">Compound Interest</span><span class="calc-val" id="si-ci">₹0</span></div>
+              <div class="calc-row"><span class="calc-key">CI Maturity</span><span class="calc-val big" id="si-ci-mat">₹0</span></div>
+            </div>
+          </div>
+          <div class="card">
+            <h3 class="text-white font-bold mb-4">🏦 EMI Calculator</h3>
+            <div class="form-group-dark">
+              <label class="form-label-dark">Principal (₹)</label>
+              <input type="number" class="form-input-dark" id="emi-principal" placeholder="e.g., 500000">
+            </div>
+            <div class="form-group-dark">
+              <label class="form-label-dark">Annual Rate (%)</label>
+              <input type="number" class="form-input-dark" id="emi-rate" placeholder="e.g., 10.5" step="0.1">
+            </div>
+            <div class="form-group-dark">
+              <label class="form-label-dark">Years</label>
+              <input type="number" class="form-input-dark" id="emi-years" placeholder="e.g., 10">
+            </div>
+            <button class="btn btn-primary w-full mb-4" onclick="calcEMI()">Calculate EMI</button>
+            <div id="emi-result" style="display:none" class="calc-result">
+              <div class="calc-row"><span class="calc-key">Monthly EMI</span><span class="calc-val big" id="emi-emi">₹0</span></div>
+              <div class="calc-row"><span class="calc-key">Total Payable</span><span class="calc-val" id="emi-total">₹0</span></div>
+              <div class="calc-row"><span class="calc-key">Total Interest</span><span class="calc-val text-red" id="emi-interest">₹0</span></div>
+              <div class="calc-row"><span class="calc-key">Interest Ratio</span><span class="calc-val" id="emi-ratio">0%</span></div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- SETTINGS -->
+      <div class="page-section" id="page-settings">
+        <div class="page-header">
+          <h2>Account Settings</h2>
+          <p>Manage your profile and security</p>
+          <div class="chakra-divider"></div>
+        </div>
+        <div class="card" style="max-width: 480px;">
+          <h3 class="text-white font-bold mb-4">🔐 Change Password</h3>
+          <div class="form-group-dark">
+            <label class="form-label-dark">Current Password</label>
+            <input type="password" class="form-input-dark" id="cp-old" placeholder="Enter current password">
+          </div>
+          <div class="form-group-dark">
+            <label class="form-label-dark">New Password</label>
+            <input type="password" class="form-input-dark" id="cp-new" placeholder="Enter new password (min 6 chars)">
+          </div>
+          <button class="btn btn-primary" onclick="changePassword()">🔑 Update Password</button>
+        </div>
+      </div>
+
+      <!-- ADMIN STATS -->
+      <div class="page-section" id="page-admin-stats">
+        <div class="page-header">
+          <h2>Bank Statistics</h2>
+          <p>System-wide financial overview</p>
+          <div class="chakra-divider"></div>
+        </div>
+        <div class="admin-stat-grid" id="admin-stats-grid"></div>
+      </div>
+
+      <!-- ADMIN USERS -->
+      <div class="page-section" id="page-admin-users">
+        <div class="page-header">
+          <h2>Manage Users</h2>
+          <p>View and manage all customers</p>
+          <div class="chakra-divider"></div>
+        </div>
+        <div class="table-container">
+          <table>
+            <thead><tr><th>ID</th><th>Name</th><th>Role</th><th>Status</th><th>Attempts</th><th>Created</th><th>Actions</th></tr></thead>
+            <tbody id="admin-users-table"></tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- ADMIN ACCOUNTS -->
+      <div class="page-section" id="page-admin-accounts">
+        <div class="page-header">
+          <h2>All Accounts</h2>
+          <p>Overview of all bank accounts</p>
+          <div class="chakra-divider"></div>
+        </div>
+        <div class="table-container">
+          <table>
+            <thead><tr><th>Acc #</th><th>Customer</th><th>Type</th><th>Balance</th><th>Opened</th></tr></thead>
+            <tbody id="admin-acc-table"></tbody>
+          </table>
+        </div>
+      </div>
+
+    </main>
+  </div>
+</div>
+
+<!-- Notification Panel -->
+<div id="notif-panel" class="notif-panel">
+  <div class="notif-header">
+    <h3>🔔 Notifications</h3>
+    <button class="modal-close" onclick="toggleNotifPanel()">✕</button>
+  </div>
+  <div id="notif-list"></div>
+</div>
+
+<!-- EMI Pay Modal -->
+<div id="emi-modal" class="modal-overlay" style="display:none">
+  <div class="modal">
+    <div class="modal-header">
+      <h3 class="modal-title">💳 Pay EMI</h3>
+      <button class="modal-close" onclick="closeEmiModal()">✕</button>
+    </div>
+    <input type="hidden" id="emi-loan-id">
+    <div class="form-group-dark">
+      <label class="form-label-dark">Pay from Account</label>
+      <select class="form-input-dark" id="emi-from-account"></select>
+    </div>
+    <div class="mt-4">
+      <button class="btn btn-primary w-full" onclick="payEMI()">💳 Pay EMI Now</button>
+    </div>
+  </div>
+</div>
+
+<!-- Toast Container -->
+<div id="toast-container"></div>
+
+<script>
+const API = 'http://localhost:8080/api';
+let token = null;
+let currentUser = null;
+let userAccounts = [];
+
+// ======== AUTH ========
+function switchAuthTab(tab) {
+  document.querySelectorAll('.auth-tab').forEach((t,i) => t.classList.toggle('active', (i===0 && tab==='login') || (i===1 && tab==='register')));
+  document.getElementById('login-form').style.display = tab === 'login' ? 'block' : 'none';
+  document.getElementById('register-form').style.display = tab === 'register' ? 'block' : 'none';
+}
+
+async function doLogin() {
+  const username = document.getElementById('login-user').value.trim();
+  const password = document.getElementById('login-pass').value;
+  if (!username || !password) { showToast('Please enter username and password', 'error'); return; }
+  const res = await api('/login', 'POST', { username, password }, false);
+  if (res.success) {
+    token = res.token;
+    currentUser = { name: res.name, role: res.role };
+    onLogin();
+  } else {
+    showToast(res.message || 'Login failed', 'error');
+  }
+}
+
+async function doRegister() {
+  const username = document.getElementById('reg-user').value.trim();
+  const password = document.getElementById('reg-pass').value;
+  if (!username || !password) { showToast('Please fill all fields', 'error'); return; }
+  const res = await api('/register', 'POST', { username, password }, false);
+  if (res.success) {
+    showToast('Registered! Please login.', 'success');
+    switchAuthTab('login');
+  } else {
+    showToast(res.message || 'Registration failed', 'error');
+  }
+}
+
+function onLogin() {
+  document.getElementById('auth-screen').style.display = 'none';
+  document.getElementById('main-app').style.display = 'block';
+  document.getElementById('header-username').textContent = currentUser.name;
+  document.getElementById('user-avatar').textContent = currentUser.name[0].toUpperCase();
+  document.getElementById('dash-greeting').textContent = `Namaste, ${currentUser.name}! 🙏`;
+  if (currentUser.role === 'Admin') {
+    document.getElementById('admin-nav').style.display = 'block';
+  }
+  loadDashboard();
+  pollNotifications();
+}
+
+async function doLogout() {
+  await api('/logout', 'GET');
+  token = null; currentUser = null; userAccounts = [];
+  document.getElementById('main-app').style.display = 'none';
+  document.getElementById('auth-screen').style.display = 'flex';
+  document.getElementById('login-user').value = '';
+  document.getElementById('login-pass').value = '';
+}
+
+// ======== NAVIGATION ========
+function navigateTo(page) {
+  document.querySelectorAll('.page-section').forEach(p => p.classList.remove('active'));
+  document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
+  document.getElementById('page-' + page)?.classList.add('active');
+  document.getElementById('nav-' + page)?.classList.add('active');
+  const actions = {
+    'dashboard': loadDashboard,
+    'accounts': loadAccounts,
+    'transactions': populateTxAccountSelect,
+    'deposit': () => populateAccountSelects(['dep-account']),
+    'withdraw': () => populateAccountSelects(['wd-account']),
+    'transfer': loadTransferPage,
+    'beneficiaries': loadBeneficiaries,
+    'fd': loadFDPage,
+    'loans': loadLoansPage,
+    'admin-stats': loadAdminStats,
+    'admin-users': loadAdminUsers,
+    'admin-accounts': loadAdminAccounts,
+  };
+  actions[page]?.();
+}
+
+// ======== DATA LOADING ========
+async function loadAccounts() {
+  userAccounts = await api('/accounts', 'GET') || [];
+  const listEl = document.getElementById('acc-list');
+  if (!userAccounts.length) {
+    listEl.innerHTML = '<div class="empty-state"><div class="empty-icon">🪙</div><h3>No Accounts Yet</h3><p>Create a savings or current account above.</p></div>';
+    return;
+  }
+  listEl.innerHTML = userAccounts.map(a => accCardHTML(a)).join('');
+  return userAccounts;
+}
+
+function accCardHTML(a) {
+  const type = a.type.toLowerCase();
+  return `<div class="account-card ${type}">
+    <div class="acc-type">${a.type} Account</div>
+    <div class="acc-id">Account #${a.account_id}</div>
+    <div class="acc-balance"><span class="acc-rupee">₹</span>${fmt(a.balance)}</div>
+    <div class="acc-date">Opened: ${a.created_at?.split(' ')[0] || ''}</div>
+  </div>`;
+}
+
+async function loadDashboard() {
+  const accounts = await loadAccounts();
+  const dashAccEl = document.getElementById('dash-accounts');
+  dashAccEl.innerHTML = userAccounts.length ? userAccounts.map(a => accCardHTML(a)).join('') : '<div class="text-muted text-sm">No accounts yet. <button class="btn btn-primary btn-sm" onclick="navigateTo(\'accounts\')">Create one →</button></div>';
+  const total = userAccounts.reduce((s, a) => s + a.balance, 0);
+  document.getElementById('dash-total-balance').textContent = '₹' + fmt(total);
+  document.getElementById('dash-acc-count').textContent = userAccounts.length;
+  const fds = await api('/fd/list', 'GET');
+  const loans = await api('/loan/list', 'GET');
+  document.getElementById('dash-fd-count').textContent = fds.fds?.filter(f => f.status === 'ACTIVE').length || 0;
+  document.getElementById('dash-loan-count').textContent = loans.loans?.filter(l => l.status === 'ACTIVE').length || 0;
+}
+
+function populateAccountSelects(ids) {
+  ids.forEach(id => {
+    const sel = document.getElementById(id);
+    if (!sel) return;
+    sel.innerHTML = userAccounts.length
+      ? userAccounts.map(a => `<option value="${a.account_id}">#${a.account_id} — ${a.type} (₹${fmt(a.balance)})</option>`).join('')
+      : '<option value="">No accounts</option>';
+  });
+}
+
+async function populateTxAccountSelect() {
+  if (!userAccounts.length) await loadAccounts();
+  const sel = document.getElementById('tx-account-select');
+  sel.innerHTML = userAccounts.map(a => `<option value="${a.account_id}">#${a.account_id} — ${a.type}</option>`).join('');
+}
+
+// ======== ACCOUNTS ========
+async function createAccount(type) {
+  const res = await api('/accounts', 'POST', { type });
+  showToast(res.message, res.success ? 'success' : 'error');
+  if (res.success) { await loadAccounts(); }
+}
+
+// ======== DEPOSIT ========
+async function doDeposit() {
+  const accId = +document.getElementById('dep-account').value;
+  const amount = +document.getElementById('dep-amount').value;
+  const res = await api('/deposit', 'POST', { account_id: accId, amount });
+  showToast(res.message, res.success ? 'success' : 'error');
+  if (res.success) { document.getElementById('dep-amount').value = ''; await loadAccounts(); populateAccountSelects(['dep-account']); }
+}
+
+// ======== WITHDRAW ========
+async function doWithdraw() {
+  const accId = +document.getElementById('wd-account').value;
+  const amount = +document.getElementById('wd-amount').value;
+  const res = await api('/withdraw', 'POST', { account_id: accId, amount });
+  if (res.success) {
+    showToast(`Withdrawn ₹${fmt(res.amount)} | Charges: ₹${fmt(res.charges)} | New Balance: ₹${fmt(res.new_balance)}`, 'success');
+    document.getElementById('wd-amount').value = '';
+    await loadAccounts(); populateAccountSelects(['wd-account']);
+  } else { showToast(res.message, 'error'); }
+}
+
+// ======== TRANSFER ========
+async function loadTransferPage() {
+  if (!userAccounts.length) await loadAccounts();
+  populateAccountSelects(['tr-from']);
+  loadBeneficiariesQuick();
+}
+
+async function loadBeneficiariesQuick() {
+  const res = await api('/beneficiary/list', 'GET');
+  const el = document.getElementById('ben-quick-list');
+  el.innerHTML = res.beneficiaries?.map(b =>
+    `<button class="btn btn-secondary btn-sm" onclick="document.getElementById('tr-to').value=${b.account_id}">👤 ${b.nickname} (#${b.account_id})</button>`
+  ).join('') || '<span class="text-muted text-sm">No saved beneficiaries</span>';
+}
+
+async function doTransfer() {
+  const from = +document.getElementById('tr-from').value;
+  const to = +document.getElementById('tr-to').value;
+  const amount = +document.getElementById('tr-amount').value;
+  if (!to) { showToast('Enter destination account ID', 'error'); return; }
+  const res = await api('/transfer', 'POST', { from_account: from, to_account: to, amount });
+  showToast(res.message, res.success ? 'success' : 'error');
+  if (res.success) { document.getElementById('tr-to').value = ''; document.getElementById('tr-amount').value = ''; await loadAccounts(); }
+}
+
+// ======== TRANSACTIONS ========
+async function loadTransactions() {
+  const accId = document.getElementById('tx-account-select').value;
+  if (!accId) { showToast('Select an account', 'error'); return; }
+  const res = await api(`/transactions?account_id=${accId}`, 'GET');
+  const tbody = document.getElementById('tx-table-body');
+  if (!res.transactions?.length) {
+    tbody.innerHTML = '<tr><td colspan="6"><div class="empty-state"><div class="empty-icon">📋</div><p>No transactions found</p></div></td></tr>';
+    return;
+  }
+  tbody.innerHTML = res.transactions.map(t => {
+    const cls = t.type.includes('Deposit') || t.type.includes('LOAN_CREDIT') ? 'tx-deposit'
+      : t.type.includes('Withdraw') || t.type.includes('EMI') ? 'tx-withdraw'
+      : t.type.includes('Transfer') ? 'tx-transfer'
+      : t.type.includes('FD') ? 'tx-fd' : 'tx-loan';
+    return `<tr>
+      <td class="text-xs text-muted">${t.timestamp?.split('.')[0] || ''}</td>
+      <td><span class="${cls} font-bold">${t.type}</span></td>
+      <td class="${cls} font-bold">₹${fmt(t.amount)}</td>
+      <td class="text-red">${t.charges > 0 ? '₹' + fmt(t.charges) : '—'}</td>
+      <td class="text-xs">${t.from} → ${t.to}</td>
+      <td class="text-muted text-xs">${t.note || '—'}</td>
+    </tr>`;
+  }).join('');
+}
+
+// ======== BENEFICIARIES ========
+async function loadBeneficiaries() {
+  const res = await api('/beneficiary/list', 'GET');
+  const tbody = document.getElementById('ben-table');
+  if (!res.beneficiaries?.length) {
+    tbody.innerHTML = '<tr><td colspan="6"><div class="empty-state"><div class="empty-icon">👥</div><p>No beneficiaries saved</p></div></td></tr>';
+    return;
+  }
+  tbody.innerHTML = res.beneficiaries.map((b,i) =>
+    `<tr><td>${i+1}</td><td>${b.nickname}</td><td>#${b.account_id}</td><td>${b.holder}</td><td><span class="badge badge-${b.type.toLowerCase()}">${b.type}</span></td>
+     <td><button class="btn btn-primary btn-xs" onclick="document.getElementById('tr-to').value=${b.account_id};navigateTo('transfer')">Transfer</button></td></tr>`
+  ).join('');
+}
+
+async function addBeneficiary() {
+  const accId = +document.getElementById('ben-acc-id').value;
+  const nickname = document.getElementById('ben-nickname').value;
+  if (!accId) { showToast('Enter account ID', 'error'); return; }
+  const res = await api('/beneficiary/add', 'POST', { account_id: accId, nickname });
+  showToast(res.message, res.success ? 'success' : 'error');
+  if (res.success) { document.getElementById('ben-acc-id').value = ''; document.getElementById('ben-nickname').value = ''; loadBeneficiaries(); }
+}
+
+// ======== FIXED DEPOSITS ========
+async function loadFDPage() {
+  if (!userAccounts.length) await loadAccounts();
+  populateAccountSelects(['fd-account']);
+  loadFDList();
+}
+
+async function loadFDList() {
+  const res = await api('/fd/list', 'GET');
+  const el = document.getElementById('fd-list');
+  if (!res.fds?.length) { el.innerHTML = '<div class="empty-state"><div class="empty-icon">📈</div><p>No FDs yet</p></div>'; return; }
+  el.innerHTML = res.fds.map(fd => `
+    <div class="card mb-4" style="padding:16px;">
+      <div class="flex justify-between items-center">
+        <div>
+          <div class="text-xs text-muted">FD #${fd.fd_id} | Acc #${fd.source_account_id}</div>
+          <div class="text-gold font-bold">₹${fmt(fd.principal)} @ ${fd.annual_rate}% for ${fd.years}yr</div>
+          <div class="text-green text-sm">Maturity: ₹${fmt(fd.maturity_amount)}</div>
+          <div class="text-xs text-muted">${fd.created_at?.split(' ')[0]}</div>
+        </div>
+        <div style="text-align:right;">
+          <span class="badge badge-${fd.status.toLowerCase()}">${fd.status}</span>
+          ${fd.status==='ACTIVE' ? `<br><br>
+          <button class="btn btn-gold btn-xs" onclick="closeFD(${fd.fd_id}, false)">Mature</button>
+          <button class="btn btn-danger btn-xs mt-4" onclick="closeFD(${fd.fd_id}, true)" style="margin-top:4px;">Early Close</button>` : ''}
+        </div>
+      </div>
+    </div>`).join('');
+}
+
+function previewFD() {
+  const p = +document.getElementById('fd-principal').value;
+  const r = +document.getElementById('fd-rate').value;
+  const y = +document.getElementById('fd-years').value;
+  if (p > 0 && r > 0 && y > 0) {
+    const mat = p * Math.pow(1 + r/100, y);
+    document.getElementById('fd-preview').style.display = 'block';
+    document.getElementById('fd-maturity-preview').textContent = '₹' + fmt(mat);
+    document.getElementById('fd-interest-preview').textContent = '₹' + fmt(mat - p);
+  }
+}
+
+async function createFD() {
+  const res = await api('/fd/create', 'POST', {
+    account_id: +document.getElementById('fd-account').value,
+    principal: +document.getElementById('fd-principal').value,
+    rate: +document.getElementById('fd-rate').value,
+    years: +document.getElementById('fd-years').value
+  });
+  showToast(res.message, res.success ? 'success' : 'error');
+  if (res.success) { loadFDList(); await loadAccounts(); populateAccountSelects(['fd-account']); }
+}
+
+async function closeFD(fdId, early) {
+  if (early && !confirm('Close FD early? A 1% penalty on principal will be applied.')) return;
+  const res = await api('/fd/close', 'POST', { fd_id: fdId, early: early ? 'true' : 'false' });
+  showToast(res.message, res.success ? 'success' : 'error');
+  if (res.success) { loadFDList(); await loadAccounts(); }
+}
+
+// ======== LOANS ========
+async function loadLoansPage() {
+  if (!userAccounts.length) await loadAccounts();
+  populateAccountSelects(['loan-account', 'emi-from-account']);
+  loadLoanList();
+}
+
+async function loadLoanList() {
+  const res = await api('/loan/list', 'GET');
+  const el = document.getElementById('loan-list');
+  if (!res.loans?.length) { el.innerHTML = '<div class="empty-state"><div class="empty-icon">🏦</div><p>No loans yet</p></div>'; return; }
+  el.innerHTML = res.loans.map(l => `
+    <div class="card mb-4" style="padding:16px;">
+      <div class="flex justify-between items-center">
+        <div>
+          <div class="text-xs text-muted">Loan #${l.loan_id} | Acc #${l.account_id}</div>
+          <div class="text-white font-bold">₹${fmt(l.principal)} @ ${l.annual_rate}%</div>
+          <div class="text-sm">EMI: <span class="text-gold">₹${fmt(l.emi)}</span>/month</div>
+          <div class="text-sm">Paid: <span class="text-green">₹${fmt(l.amount_paid)}</span> | Remaining: <span class="text-red">₹${fmt(l.remaining)}</span></div>
+        </div>
+        <div style="text-align:right;">
+          <span class="badge badge-${l.status.toLowerCase()}">${l.status}</span>
+          ${l.status==='ACTIVE' ? `<br><br><button class="btn btn-primary btn-xs" onclick="openEmiModal(${l.loan_id})">💳 Pay EMI</button>` : ''}
+        </div>
+      </div>
+    </div>`).join('');
+}
+
+function previewLoan() {
+  const p = +document.getElementById('loan-principal').value;
+  const r = +document.getElementById('loan-rate').value;
+  const y = +document.getElementById('loan-years').value;
+  if (p > 0 && r > 0 && y > 0) {
+    const m = y * 12, mr = r / (12 * 100);
+    const emi = (p * mr * Math.pow(1+mr, m)) / (Math.pow(1+mr, m) - 1);
+    const total = emi * m;
+    document.getElementById('loan-preview').style.display = 'block';
+    document.getElementById('loan-emi-preview').textContent = '₹' + fmt(emi);
+    document.getElementById('loan-total-preview').textContent = '₹' + fmt(total);
+    document.getElementById('loan-interest-preview').textContent = '₹' + fmt(total - p);
+  }
+}
+
+async function applyLoan() {
+  const res = await api('/loan/apply', 'POST', {
+    account_id: +document.getElementById('loan-account').value,
+    principal: +document.getElementById('loan-principal').value,
+    rate: +document.getElementById('loan-rate').value,
+    years: +document.getElementById('loan-years').value
+  });
+  showToast(res.message, res.success ? 'success' : 'error');
+  if (res.success) { loadLoanList(); await loadAccounts(); }
+}
+
+function openEmiModal(loanId) {
+  document.getElementById('emi-loan-id').value = loanId;
+  populateAccountSelects(['emi-from-account']);
+  document.getElementById('emi-modal').style.display = 'flex';
+}
+function closeEmiModal() { document.getElementById('emi-modal').style.display = 'none'; }
+
+async function payEMI() {
+  const loanId = +document.getElementById('emi-loan-id').value;
+  const fromAcc = +document.getElementById('emi-from-account').value;
+  const res = await api('/loan/pay', 'POST', { loan_id: loanId, account_id: fromAcc });
+  showToast(res.message, res.success ? 'success' : 'error');
+  if (res.success) { closeEmiModal(); loadLoanList(); await loadAccounts(); }
+}
+
+// ======== CALCULATOR ========
+function calcSavings() {
+  const p = +document.getElementById('si-principal').value;
+  const r = +document.getElementById('si-rate').value;
+  const y = +document.getElementById('si-years').value;
+  if (!p || !r || !y) { showToast('Fill all fields', 'error'); return; }
+  const si = (p * r * y) / 100;
+  const ci = p * Math.pow(1 + r/100, y) - p;
+  document.getElementById('si-result').style.display = 'block';
+  document.getElementById('si-si').textContent = '₹' + fmt(si);
+  document.getElementById('si-si-mat').textContent = '₹' + fmt(p + si);
+  document.getElementById('si-ci').textContent = '₹' + fmt(ci);
+  document.getElementById('si-ci-mat').textContent = '₹' + fmt(p + ci);
+}
+
+function calcEMI() {
+  const p = +document.getElementById('emi-principal').value;
+  const r = +document.getElementById('emi-rate').value;
+  const y = +document.getElementById('emi-years').value;
+  if (!p || !r || !y) { showToast('Fill all fields', 'error'); return; }
+  const m = y * 12, mr = r / (12 * 100);
+  const emi = (p * mr * Math.pow(1+mr, m)) / (Math.pow(1+mr, m) - 1);
+  const total = emi * m;
+  document.getElementById('emi-result').style.display = 'block';
+  document.getElementById('emi-emi').textContent = '₹' + fmt(emi);
+  document.getElementById('emi-total').textContent = '₹' + fmt(total);
+  document.getElementById('emi-interest').textContent = '₹' + fmt(total - p);
+  document.getElementById('emi-ratio').textContent = ((total - p) / total * 100).toFixed(1) + '%';
+}
+
+// ======== PASSWORD ========
+async function changePassword() {
+  const old = document.getElementById('cp-old').value;
+  const nw = document.getElementById('cp-new').value;
+  const res = await api('/password/change', 'POST', { old_password: old, new_password: nw });
+  showToast(res.message, res.success ? 'success' : 'error');
+  if (res.success) { document.getElementById('cp-old').value = ''; document.getElementById('cp-new').value = ''; }
+}
+
+// ======== NOTIFICATIONS ========
+async function toggleNotifPanel() {
+  const panel = document.getElementById('notif-panel');
+  const isOpen = panel.classList.toggle('open');
+  if (isOpen) {
+    const res = await api('/notifications', 'GET');
+    const el = document.getElementById('notif-list');
+    el.innerHTML = res.notifications?.length
+      ? res.notifications.map(n => `<div class="notif-item ${n.is_read ? '' : 'unread'}"><div class="notif-msg">${n.message}</div><div class="notif-time">${n.created_at}</div></div>`).join('')
+      : '<div class="empty-state"><div class="empty-icon">🔔</div><p>No notifications</p></div>';
+    document.getElementById('notif-badge')?.remove();
+    const badge = document.querySelector('.notif-badge');
+    if (badge) badge.style.display = 'none';
+  }
+}
+
+async function pollNotifications() {
+  const res = await api('/notifications/count', 'GET');
+  const badge = document.getElementById('notif-count');
+  if (res.count > 0) { badge.style.display = 'flex'; badge.textContent = res.count; }
+  else { badge.style.display = 'none'; }
+  setTimeout(pollNotifications, 30000);
+}
+
+// ======== ADMIN ========
+async function loadAdminStats() {
+  const res = await api('/admin/stats', 'GET');
+  const el = document.getElementById('admin-stats-grid');
+  el.innerHTML = `
+    <div class="admin-stat-card"><div class="admin-stat-label">Total Accounts</div><div class="admin-stat-value">${res.accounts}</div></div>
+    <div class="admin-stat-card"><div class="admin-stat-label">Total Deposits</div><div class="admin-stat-value">₹${fmt(res.total_deposits)}</div></div>
+    <div class="admin-stat-card"><div class="admin-stat-label">Active Loans</div><div class="admin-stat-value">${res.active_loans}</div></div>
+    <div class="admin-stat-card"><div class="admin-stat-label">Loan Book</div><div class="admin-stat-value">₹${fmt(res.total_loan_book)}</div></div>
+    <div class="admin-stat-card"><div class="admin-stat-label">Active FDs</div><div class="admin-stat-value">${res.active_fds}</div></div>
+    <div class="admin-stat-card"><div class="admin-stat-label">FD Book</div><div class="admin-stat-value">₹${fmt(res.total_fd_book)}</div></div>
+    <div class="admin-stat-card"><div class="admin-stat-label">Customers</div><div class="admin-stat-value">${res.customers}</div></div>`;
+}
+
+async function loadAdminUsers() {
+  const res = await api('/admin/users', 'GET');
+  const tbody = document.getElementById('admin-users-table');
+  tbody.innerHTML = res.users?.map(u => `<tr>
+    <td>${u.id}</td><td class="text-white font-bold">${u.name}</td>
+    <td><span class="badge badge-${u.role === 'Admin' ? 'closed' : 'active'}">${u.role}</span></td>
+    <td>${u.is_active ? '<span class="text-green">Active</span>' : '<span class="text-red">Inactive</span>'}</td>
+    <td>${u.failed_attempts >= 5 ? '<span class="text-red font-bold">LOCKED ('+u.failed_attempts+')</span>' : u.failed_attempts}</td>
+    <td class="text-xs text-muted">${u.created_at}</td>
+    <td>
+      ${u.role !== 'Admin' ? `
+        <button class="btn btn-gold btn-xs" onclick="adminUnlock(${u.id})">Unlock</button>
+        <button class="btn btn-danger btn-xs" onclick="adminDelete(${u.id}, '${u.name}')">Delete</button>` : '—'}
+    </td>
+  </tr>`).join('');
+}
+
+async function adminDelete(id, name) {
+  if (!confirm(`Delete user "${name}"? This cannot be undone.`)) return;
+  const res = await api('/admin/delete', 'POST', { user_id: id });
+  showToast(res.message, res.success ? 'success' : 'error');
+  if (res.success) loadAdminUsers();
+}
+
+async function adminUnlock(id) {
+  const res = await api('/admin/unlock', 'POST', { user_id: id });
+  showToast(res.message, res.success ? 'success' : 'error');
+  if (res.success) loadAdminUsers();
+}
+
+async function loadAdminAccounts() {
+  const res = await api('/admin/accounts', 'GET');
+  const tbody = document.getElementById('admin-acc-table');
+  tbody.innerHTML = res.accounts?.map(a => `<tr>
+    <td class="font-bold">#${a.account_id}</td>
+    <td class="text-white">${a.user}</td>
+    <td><span class="badge badge-${a.type.toLowerCase()}">${a.type}</span></td>
+    <td class="text-gold font-bold">₹${fmt(a.balance)}</td>
+    <td class="text-xs text-muted">${a.created_at}</td>
+  </tr>`).join('');
+}
+
+// ======== API ========
+async function api(path, method = 'GET', body = null, auth = true) {
+  try {
+    const opts = { method, headers: { 'Content-Type': 'application/json' } };
+    if (auth && token) opts.headers['Authorization'] = token;
+    if (body && method !== 'GET') opts.body = JSON.stringify(body);
+    const res = await fetch(API + path, opts);
+    return await res.json();
+  } catch (e) {
+    showToast('Connection error. Is the server running?', 'error');
+    return {};
+  }
+}
+
+// ======== UTILS ========
+function fmt(n) {
+  if (!n && n !== 0) return '0.00';
+  return Number(n).toLocaleString('en-IN', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+}
+
+function showToast(msg, type = 'info') {
+  const icons = { success: '✅', error: '❌', info: 'ℹ️' };
+  const el = document.createElement('div');
+  el.className = `toast ${type}`;
+  el.innerHTML = `<span class="toast-icon">${icons[type]||'ℹ️'}</span><span class="toast-msg">${msg}</span>`;
+  document.getElementById('toast-container').appendChild(el);
+  setTimeout(() => { el.style.opacity = '0'; el.style.transform = 'translateX(60px)'; el.style.transition = 'all 0.4s'; setTimeout(() => el.remove(), 400); }, 3500);
+}
+
+// Enter key support
+document.addEventListener('keydown', e => {
+  if (e.key === 'Enter' && document.getElementById('auth-screen').style.display !== 'none') {
+    const loginVisible = document.getElementById('login-form').style.display !== 'none';
+    if (loginVisible) doLogin(); else doRegister();
+  }
+});
+</script>
+</body>
+</html>
